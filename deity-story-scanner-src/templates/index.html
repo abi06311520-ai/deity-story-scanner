@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#09051e" />
+  <title>Divine Story Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="cosmos" aria-hidden="true"><div class="aurora"></div><div class="stars"></div><div class="mandala mandala-left">✺</div><div class="mandala mandala-right">✺</div><div class="petals"><i>✦</i><i>✧</i><i>✦</i><i>✧</i><i>✦</i><i>✧</i><i>✦</i></div></div>
+  <main class="shell">
+    <header class="site-header">
+      <div class="brand-mark"><span class="brand-orb">✦</span><span><b>DIVINE STORY</b><small>SACRED STATUE SCANNER</small></span></div>
+      <div class="header-status"><span class="status-dot"></span><span>Live sacred listening</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-kicker"><span>✦</span> A moment of recognition <span>✦</span></div>
+      <h1>Let the <em>divine</em><br />speak through the statue.</h1>
+      <p>Scan a sacred form. Receive its story in the voice of the deity —<br class="desktop-only" /> with every word appearing in your chosen language.</p>
+      <div class="sky-cracker-scene" aria-hidden="true"><div class="sky-bloom"></div><div class="launch-trail trail-left"></div><div class="launch-trail trail-main"></div><div class="launch-trail trail-right"></div><div class="sky-blast blast-left"><i></i><b></b><em></em><span></span></div><div class="sky-blast blast-main"><i></i><b></b><em></em><span></span></div><div class="sky-blast blast-right"><i></i><b></b><em></em><span></span></div><div class="blast-dust">✦　·　✧　·　✦</div></div>
+    </section>
+
+    <section class="workspace">
+      <div class="scan-panel glass-card">
+        <div class="section-heading"><div><span class="eyebrow">01 · INVOCATION</span><h2>Frame the sacred</h2></div><span class="step-icon">◈</span></div>
+        <p class="muted">Place the statue within the luminous frame. The scanner will identify the presence and prepare its first-person story.</p>
+        <div class="language-wrap"><label for="language">Story language <span>•</span></label><div class="select-shell"><select id="language"><option value="Tamil">தமிழ் · Tamil</option><option value="English">English</option><option value="Hindi">हिन्दी · Hindi</option><option value="Telugu">తెలుగు · Telugu</option><option value="Malayalam">മലയാളം · Malayalam</option><option value="Kannada">ಕನ್ನಡ · Kannada</option></select><span>⌄</span></div></div>
+        <div class="camera-frame"><video id="camera" autoplay playsinline></video><div class="camera-placeholder"><div class="placeholder-symbol">◌</div><span>Start the camera to open the portal</span></div><div class="scan-grid"></div><div class="scan-line"></div><div class="frame-corner tl"></div><div class="frame-corner tr"></div><div class="frame-corner bl"></div><div class="frame-corner br"></div><div class="camera-label"><span class="live-pip"></span> SACRED FRAME <span id="frameHint">· READY</span></div></div>
+        <canvas id="canvas"></canvas>
+        <div class="action-row"><button id="startCameraBtn" class="button button-secondary"><span>◎</span> Open camera</button><button id="scanBtn" class="button button-primary" disabled><span>✦</span> Scan the presence</button></div>
+        <p id="status" class="status-line"><span class="status-glyph">✧</span> The chamber is ready when you are.</p>
+      </div>
+
+      <div class="guide-panel">
+        <span class="eyebrow">THE RITUAL</span><h3>Three steps to<br /><em>hear the story</em></h3>
+        <div class="ritual-list"><div class="ritual-item"><b>01</b><span><strong>Align</strong><small>Place the deity in the golden frame.</small></span></div><div class="ritual-item"><b>02</b><span><strong>Listen</strong><small>The scanned presence narrates in first person.</small></span></div><div class="ritual-item"><b>03</b><span><strong>Receive</strong><small>Finish with a blessing and lasting lesson.</small></span></div></div>
+        <div class="guide-note"><span>✦</span><p>Each narration is shaped with reverence, clarity, and a little wonder.</p></div>
+      </div>
+    </section>
+
+    <section id="resultSection" class="result-section hidden">
+      <div class="presence-card glass-card"><div class="presence-glow"></div><span class="eyebrow">02 · PRESENCE REVEALED</span><div class="deity-orb" id="deityOrb"><div class="orb-halo halo-a"></div><div class="orb-halo halo-b"></div><img id="scannedImage" style="display:none; position:absolute; inset:0; width:100%; height:100%; border-radius:50%; object-fit:cover; z-index:10;" /><div class="orb-face" id="orbFace"><span class="orb-crown">✦</span><span class="orb-eyes">·　·</span><span class="orb-tilak">◆</span><span id="mouth" class="orb-mouth"></span></div></div><div class="presence-copy"><span class="presence-label">THE DEITY SPEAKS</span><h2 id="deityName">Identified presence</h2><p id="blessing">A sacred story is opening.</p></div><div class="voice-pill"><span class="voice-wave"><i></i><i></i><i></i><i></i><i></i></span><span id="voiceStatus">Ready to speak</span></div></div>
+      <div class="story-card glass-card"><div class="story-top"><div><span class="eyebrow">03 · ORAL TRADITION</span><h2>“I remember…”</h2></div><span id="storyLanguage" class="language-badge">Tamil</span></div><div id="storyText" class="story-text"></div><div class="conclusion-box"><span class="conclusion-mark">✦</span><div><span class="eyebrow">THE GOOD THOUGHT</span><p id="conclusionText"></p></div></div><div class="voice-controls"><button id="speakBtn" class="button button-primary"><span>◉</span> Hear the story again</button><button id="pauseBtn" class="button button-ghost"><span>Ⅱ</span> Pause</button><button id="stopBtn" class="button button-ghost"><span>■</span> Stop</button></div><p class="sync-note"><span>↗</span> The deity speaks automatically after scanning · Change language anytime to translate and replay.</p>
+        <div id="mantraStep" class="mantra-step"><div class="mantra-heading"><span class="eyebrow">04 · GAYATRI MANTRA</span><span class="mantra-symbol">ॐ</span></div><h3 id="mantraTitle">Gayatri Mantra for this deity</h3><p id="mantraText" class="mantra-text"></p><div class="mantra-actions"><button id="mantraReciteBtn" class="button button-secondary"><span>ॐ</span> Listen and repeat</button><button id="mantraReplayBtn" class="button button-ghost"><span>↻</span> Hear mantra again</button><button id="mantraStopBtn" class="button button-ghost" disabled><span>■</span> Stop</button></div><p id="mantraStatus" class="mantra-status" aria-live="polite">The app will recite the mantra first.</p><p id="mantraTranscript" class="mantra-transcript"></p></div>
+        <div class="song-step"><div><span class="eyebrow">05 · DEVOTIONAL SONG</span><h3 id="songTitle">Hear God’s Song</h3><p id="songStatus">The song will be ready after the story.</p></div><button id="hearGodSongBtn" class="button button-primary" disabled><span>♫</span> Hear God’s Song on YouTube</button></div><audio id="deitySong" preload="none" aria-hidden="true"></audio>
+      </div>
+    </section>
+
+    <footer><span>✦</span><p>Made for moments of wonder</p><span>✦</span></footer>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
