@@ -138,7 +138,11 @@ function findGenderLanguageVoice(language, gender = currentGender) {
   const code = languageCodes[language] || "en-IN";
   const regional = voices.filter((voice) => voice.lang.toLowerCase().startsWith(code.slice(0, 2)));
   const genderWords = gender === "female" ? ["female", "woman", "zira", "samantha", "veena", "lekha", "siri", "priya"] : ["male", "man", "david", "ravi", "mohan", "daniel", "guy", "rishi"];
-  const genderMatch = (voice) => genderWords.some((word) => voice.name.toLowerCase().includes(word));
+  const genderMatch = (voice) => genderWords.some((word) =>
+    ["female", "male", "woman", "man", "guy"].includes(word)
+      ? new RegExp(`\\b${word}\\b`, "i").test(voice.name)
+      : voice.name.toLowerCase().includes(word)
+  );
   return regional.find(genderMatch) || null;
 }
 function findLanguageVoice(language) {
@@ -184,12 +188,6 @@ function speakStory() {
   currentUtterance.onresume = () => { setTalking(true); voiceStatus.textContent = `${currentDeity} is speaking…`; };
   currentUtterance.onend = () => { setTalking(false); clearHighlights(); voiceStatus.textContent = "The blessing has been received."; if (typeof beginGayatriSequence === "function") beginGayatriSequence(); };
   currentUtterance.onerror = (error) => { console.error(error); setTalking(false); voiceStatus.textContent = `Speech is unavailable for ${currentLanguage}.`; };
-  const immediateVoice = findGenderLanguageVoice(currentLanguage, currentGender) || findLanguageVoice(currentLanguage);
-  if (immediateVoice) {
-    currentUtterance.voice = immediateVoice;
-    window.speechSynthesis.speak(currentUtterance);
-    return;
-  }
   playServerNarration(`${currentStory} ${currentConclusion}`, currentLanguage, currentGender, () => currentUtterance.onend?.());
 }
 
@@ -645,14 +643,15 @@ async function playServerNarration(text, language, gender, onEnd) {
   } catch (error) {
     console.error("Generated narration failed", error);
     setTalking(false);
-    if (text === `${currentStory} ${currentConclusion}` && currentUtterance) {
+    const matchingVoice = findGenderLanguageVoice(language, gender);
+    if (text === `${currentStory} ${currentConclusion}` && currentUtterance && matchingVoice) {
       currentUtterance.lang = languageCodes[language] || "en-IN";
-      currentUtterance.voice = getPreferredVoice(language, gender);
+      currentUtterance.voice = matchingVoice;
       currentUtterance.onstart = () => { setTalking(true); voiceStatus.textContent = `${currentDeity} is speaking in ${language}`; };
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(currentUtterance);
     } else {
-      voiceStatus.textContent = `Generated narration is unavailable for ${language}.`;
+      voiceStatus.textContent = `The ${gender} voice is unavailable for ${language}.`;
       onEnd?.();
     }
   }
